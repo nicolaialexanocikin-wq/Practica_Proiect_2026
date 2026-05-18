@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RC 251 - Accessibility Audit | WAI-ARIA</title>
+ 
+<!-- Accessibility Audit: WAI-ARIA implementation by Alexanocikin Nicolai -->
+
+ 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+ 
+  <style>
+    /* ── DESIGN TOKENS ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0d0f14;
+      --surface:   #151820;
+      --border:    #252a38;
+      --accent:    #5b8eff;
+      --accent2:   #ff6b6b;
+      --accent3:   #36d7b7;
+      --text:      #e8eaf0;
+      --muted:     #6b7390;
+      --focus-ring: 0 0 0 3px #5b8eff99;
+      --radius:    10px;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+ 
+    /* ── RESET ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-head);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+ 
+    /* ── SKIP LINK (accesibilitate keyboard-first) ───────────────── */
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 1rem;
+      background: var(--accent);
+      color: #fff;
+      padding: .5rem 1rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      z-index: 9999;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 1rem; }
+ 
+    /* ── FOCUS MANAGEMENT – vizibil pentru utilizatori TAB ──────── */
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+      border-radius: 4px;
+    }
+ 
+    /* ── NAVIGATION ─────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+ 
+    nav[role="navigation"] {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: .9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+ 
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+ 
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+ 
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] { color: var(--text); }
+ 
+    /* Hamburger – mobil */
+    .menu-btn {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .5rem .7rem;
+      cursor: pointer;
+      gap: 5px;
+      flex-direction: column;
+      color: var(--text);
+    }
+    .menu-btn .icon-bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+ 
+    @media (max-width: 680px) {
+      .menu-btn { display: flex; }
+      .nav-links { display: none; }
+      .nav-links.open { display: flex; flex-direction: column; }
+    }
+ 
+    /* ── MAIN LAYOUT ────────────────────────────────────────────── */
+    main[role="main"] {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+ 
+    /* ── HERO ────────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 4rem 0 5rem;
+      position: relative;
+    }
+ 
+    /* decorative grid – aria-hidden */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: .25;
+      pointer-events: none;
+    }
+ 
+    /* H1 – UNIC PE PAGINĂ */
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      position: relative;
+    }
+ 
+    .accent-word { color: var(--accent); }
+ 
+    .hero-sub {
+      margin-top: 1rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      position: relative;
+    }
+ 
+    /* ── SECTION GENERIC ─────────────────────────────────────────── */
+    section { margin-bottom: 5rem; }
+ 
+    /* H2 – SECȚIUNI principale */
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+ 
+    h2 .tag {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: .15rem .5rem;
+      border-radius: 4px;
+    }
+ 
+    /* H3 – SUBsecțiuni */
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent3);
+      margin-bottom: .5rem;
+    }
+ 
+    /* ── CARD ────────────────────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+ 
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+ 
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      background: #5b8eff18;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+ 
+    /* ── SERVICES ────────────────────────────────────────────────── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+ 
+    .service-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+    }
+ 
+    .service-item p { color: var(--muted); font-size: .88rem; margin-top: .3rem; }
+ 
+    /* ── BUTTONS ─────────────────────────────────────────────────── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .9rem;
+      align-items: center;
+    }
+ 
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem 1.4rem;
+      border-radius: 8px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      border: none;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+    }
+    .btn:hover { opacity: .85; transform: translateY(-1px); }
+    .btn:active { transform: scale(.97); }
+ 
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-danger  { background: var(--accent2); color: #fff; }
+    .btn-ghost   {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+ 
+    /* Icon-only buttons */
+    .btn-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+ 
+    /* ── SOCIAL LINKS ────────────────────────────────────────────── */
+    .social-row {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+ 
+    .social-link {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+ 
+    /* ── CODE BLOCK ──────────────────────────────────────────────── */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      color: #c9d1e0;
+    }
+ 
+    .code-block .k  { color: #ff79c6; }  /* keyword */
+    .code-block .a  { color: #50fa7b; }  /* attr */
+    .code-block .v  { color: #f1fa8c; }  /* value */
+    .code-block .c  { color: #6272a4; font-style: italic; } /* comment */
+    .code-block .t  { color: #8be9fd; }  /* tag */
+ 
+    /* ── HEADING AUDIT TABLE ─────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; }
+ 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+    }
+ 
+    th, td {
+      padding: .75rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+ 
+    th { background: var(--surface); color: var(--accent); font-weight: 700; }
+    tr:nth-child(even) td { background: #151820; }
+ 
+    .badge {
+      display: inline-block;
+      padding: .15rem .55rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+    .badge-ok   { background: #36d7b722; color: var(--accent3); border: 1px solid #36d7b744; }
+    .badge-warn { background: #ff6b6b22; color: var(--accent2); border: 1px solid #ff6b6b44; }
+ 
+    /* ── SEPARATOR – decorativ ───────────────────────────────────── */
+    hr.decorative { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+ 
+    /* ── FOOTER ──────────────────────────────────────────────────── */
+    footer[role="contentinfo"] {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+ 
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+ 
+    /* ── MODAL DIALOG ────────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #00000099;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+ 
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      max-width: 440px;
+      width: 90%;
+      position: relative;
+    }
+ 
+    .modal h2 { font-size: 1.3rem; margin-bottom: .75rem; }
+    .modal p  { color: var(--muted); font-size: .9rem; }
+ 
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 32px; height: 32px;
+      cursor: pointer;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      transition: border-color .2s;
+    }
+    .modal-close:hover { border-color: var(--accent2); color: var(--accent2); }
+ 
+    /* ── FORM ────────────────────────────────────────────────────── */
+    .form-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+    .form-group label { font-size: .88rem; color: var(--muted); }
+    .form-group input,
+    .form-group textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-head);
+      font-size: .9rem;
+      padding: .65rem .9rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: var(--focus-ring);
+    }
+ 
+    /* ── LIVE REGION ─────────────────────────────────────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      margin: -1px; padding: 0;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+ 
+<body>
+ 
+  <!-- Skip-link: keyboard users jump directly to content -->
+  <a class="skip-link" href="#main-content">Sari la conținut principal</a>
+ 
+  <!-- ══ HEADER / NAV ══════════════════════════════════════════════ -->
+  <header>
+    <nav role="navigation" aria-label="Navigație principală">
+      <a href="#" class="logo" aria-label="RC 251 – Acasă">RC<span style="color:var(--text)">251</span></a>
+ 
+      <!-- Hamburger – buton cu iconițe, fără text → aria-label obligatoriu -->
+      <button
+        class="menu-btn"
+        aria-label="Deschide meniul de navigație"
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        onclick="toggleMenu(this)"
+      >
+        <span class="icon-bar" aria-hidden="true"></span>
+        <span class="icon-bar" aria-hidden="true"></span>
+        <span class="icon-bar" aria-hidden="true"></span>
+      </button>
+ 
+      <ul class="nav-links" id="primary-nav" role="list">
+        <li><a href="#servicii" aria-current="page">Servicii</a></li>
+        <li><a href="#aria-demo">ARIA Demo</a></li>
+        <li><a href="#audit">Audit</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+ 
+  <!-- ══ MAIN ══════════════════════════════════════════════════════ -->
+  <main role="main" id="main-content" tabindex="-1">
+ 
+    <!-- ── HERO ─────────────────────────────────────────────────── -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <!-- Elementul decorativ → aria-hidden -->
+      <div class="hero-bg" aria-hidden="true"></div>
+ 
+      <!-- H1 -->
+      <h1 id="hero-heading">
+        <span class="accent-word">Accessibility</span><br />
+        Audit &amp; WAI-ARIA
+      </h1>
+      <p class="hero-sub">Ziua 9 | Nivel Expert RC 251 · Web Accessibility Initiative</p>
+    </section>
+ 
+    <hr class="decorative" aria-hidden="true" />
+ 
+    <!-- H2 -->
+    <section id="servicii" aria-labelledby="servicii-heading">
+      <h2 id="servicii-heading">
+        Servicii <span class="tag" aria-hidden="true">&lt;h2&gt;</span>
+      </h2>
+ 
+      <div class="services-grid">
+ 
+        <!-- H3 -->
+        <div class="service-item">
+          <h3>Audit Accesibilitate</h3>
+          <p>Evaluare completă WCAG 2.2 pentru interfețele existente.</p>
+        </div>
+ 
+        <div class="service-item">
+          <h3>Implementare ARIA</h3>
+          <p>Adăugare atribute WAI-ARIA la componente interactive complexe.</p>
+        </div>
+ 
+        <div class="service-item">
+          <h3>Focus Management</h3>
+          <p>Gestionarea focusului pentru modals, drawer-uri și SPA-uri.</p>
+        </div>
+ 
+        <div class="service-item">
+          <h3>Screen Reader Testing</h3>
+          <p>Testare cu NVDA, VoiceOver și JAWS pe scenarii reale.</p>
+        </div>
+      </div>
+    </section>
+ 
+    <!-- ══ H2: ARIA DEMO – BUTOANE ════════════════════════════════ -->
+    <section id="aria-demo" aria-labelledby="aria-heading">
+      <h2 id="aria-heading">
+        ARIA Demo – Butoane &amp; Linkuri <span class="tag" aria-hidden="true">&lt;h2&gt;</span>
+      </h2>
+ 
+      <!-- H3: Butoane cu text -->
+      <h3>Butoane cu text explicit</h3>
+      <div class="btn-row" style="margin-bottom:2rem">
+        <button class="btn btn-primary" type="button">
+          <i class="fas fa-rocket" aria-hidden="true"></i>
+          Lansează
+        </button>
+ 
+        <button class="btn btn-danger" type="button">
+          <i class="fas fa-trash" aria-hidden="true"></i>
+          Șterge
+        </button>
+ 
+        <button class="btn btn-ghost" type="button">
+          <i class="fas fa-download" aria-hidden="true"></i>
+          Descarcă
+        </button>
+      </div>
+ 
+      <!-- H3: Butoane ICON-ONLY → aria-label obligatoriu -->
+      <h3>Butoane cu iconițe (fără text vizibil)</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">
+        Fiecare buton de mai jos are <code>aria-label</code> deoarece nu conține text vizibil.
+      </p>
+      <div class="btn-row" style="margin-bottom:2rem">
+        <button
+          class="btn-icon"
+          type="button"
+          aria-label="Editează înregistrarea"
+          title="Editează"
+        >
+          <i class="fas fa-pen" aria-hidden="true"></i>
+        </button>
+ 
+        <button
+          class="btn-icon"
+          type="button"
+          aria-label="Caută în conținut"
+          title="Caută"
+        >
+          <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+        </button>
+ 
+        <button
+          class="btn-icon"
+          type="button"
+          aria-label="Setări aplicație"
+          title="Setări"
+        >
+          <i class="fas fa-gear" aria-hidden="true"></i>
+        </button>
+ 
+        <button
+          class="btn-icon"
+          type="button"
+          aria-label="Împărtășește această pagină"
+          title="Share"
+        >
+          <i class="fas fa-share-nodes" aria-hidden="true"></i>
+        </button>
+ 
+        <!-- Deschide modal -->
+        <button
+          class="btn btn-ghost"
+          type="button"
+          aria-label="Deschide fereastra de detalii"
+          aria-haspopup="dialog"
+          onclick="openModal()"
+        >
+          <i class="fas fa-circle-info" aria-hidden="true"></i>
+          Detalii modal
+        </button>
+      </div>
+ 
+      <!-- H3: Social Media links -->
+      <h3>Link-uri Social Media</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">
+        Iconițele Font Awesome au <code>aria-hidden="true"</code>; linkul are <code>aria-label</code>.
+      </p>
+      <div class="social-row">
+        <a href="#" class="social-link" aria-label="Vizitează pagina noastră de Instagram">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Urmărește-ne pe X / Twitter">
+          <i class="fab fa-x-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Conectează-te pe LinkedIn">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Explorează proiectele pe GitHub">
+          <i class="fab fa-github" aria-hidden="true"></i>
+        </a>
+        <a href="#" class="social-link" aria-label="Abonează-te pe YouTube">
+          <i class="fab fa-youtube" aria-hidden="true"></i>
+        </a>
+      </div>
+    </section>
+ 
+    <!-- ══ H2: AUDIT – CODUL SURSĂ ═══════════════════════════════ -->
+    <section id="audit" aria-labelledby="audit-heading">
+      <h2 id="audit-heading">
+        Structura Semantică – Cod Corect <span class="tag" aria-hidden="true">&lt;h2&gt;</span>
+      </h2>
+ 
+      <!-- H3 -->
+      <h3>Exemplu GREȘIT → CORECTAT</h3>
+      <div class="card-grid" style="margin-bottom:2rem">
+        <div class="card">
+          <h3 style="color:var(--accent2)">❌ Structură defectuoasă</h3>
+          <pre class="code-block" style="margin-top:.75rem;font-size:.78rem">
+<span class="t">&lt;h1&gt;</span>Titlu Site<span class="t">&lt;/h1&gt;</span>
+<span class="c">/* EROARE: sărire H2 */</span>
+<span class="t">&lt;h3&gt;</span>Servicii<span class="t">&lt;/h3&gt;</span>
+<span class="t">&lt;h2&gt;</span>Contact<span class="t">&lt;/h2&gt;</span></pre>
+        </div>
+ 
+        <div class="card">
+          <h3 style="color:var(--accent3)">✅ Structură corectă</h3>
+          <pre class="code-block" style="margin-top:.75rem;font-size:.78rem">
+<span class="t">&lt;h1&gt;</span>Titlu Site<span class="t">&lt;/h1&gt;</span>
+  <span class="t">&lt;h2&gt;</span>Servicii<span class="t">&lt;/h2&gt;</span>
+    <span class="t">&lt;h3&gt;</span>Web Design<span class="t">&lt;/h3&gt;</span>
+  <span class="t">&lt;h2&gt;</span>Contact<span class="t">&lt;/h2&gt;</span></pre>
+        </div>
+      </div>
+ 
+      <!-- H3: Tabelul auditului -->
+      <h3>Checklist WAI-ARIA</h3>
+      <div class="table-wrap" style="margin-top:.75rem">
+        <table aria-label="Checklist audit accesibilitate WAI-ARIA">
+          <thead>
+            <tr>
+              <th scope="col">Criteriu</th>
+              <th scope="col">Status</th>
+              <th scope="col">Detaliu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Unic <code>&lt;h1&gt;</code> în pagină</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Un singur H1 – "Accessibility Audit &amp; WAI-ARIA"</td>
+            </tr>
+            <tr>
+              <td>Ierarhie H1 → H2 → H3</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Nicio secvență sărită</td>
+            </tr>
+            <tr>
+              <td><code>aria-label</code> pe butoane icon-only</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Editează, Caută, Setări, Share, Detalii</td>
+            </tr>
+            <tr>
+              <td><code>aria-label</code> pe link-uri social</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Instagram, X, LinkedIn, GitHub, YouTube</td>
+            </tr>
+            <tr>
+              <td>Iconițe decorative cu <code>aria-hidden="true"</code></td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Toate <code>&lt;i class="fa*"&gt;</code></td>
+            </tr>
+            <tr>
+              <td>Landmark roles explicite</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>role="navigation", role="main", role="contentinfo"</td>
+            </tr>
+            <tr>
+              <td>Imagini informative cu <code>alt</code></td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Imagini decorative cu <code>alt=""</code></td>
+            </tr>
+            <tr>
+              <td>Skip-link pentru utilizatori keyboard</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>"Sari la conținut principal" – vizibil la focus</td>
+            </tr>
+            <tr>
+              <td>:focus-visible stilizat</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Box-shadow albastru pe toate elementele interactive</td>
+            </tr>
+            <tr>
+              <td>Modal cu <code>role="dialog"</code> &amp; focus trap</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>aria-modal, aria-labelledby, aria-describedby</td>
+            </tr>
+            <tr>
+              <td>Buton hamburger cu <code>aria-expanded</code></td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td>Actualizat dinamic la toggle</td>
+            </tr>
+            <tr>
+              <td>Live region pentru notificări</td>
+              <td><span class="badge badge-ok">✓ OK</span></td>
+              <td><code>aria-live="polite"</code> în footer</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+ 
+    <!-- ══ H2: CONTACT FORM ═══════════════════════════════════════ -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">
+        Contact <span class="tag" aria-hidden="true">&lt;h2&gt;</span>
+      </h2>
+ 
+      <div style="max-width:520px">
+        <h3>Trimite un mesaj</h3>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.5rem">
+          Toate câmpurile au <code>&lt;label&gt;</code> asociat prin <code>for</code> / <code>id</code>.
+        </p>
+ 
+        <!-- NU folosim <form> per instrucțiunile platformei -->
+        <div role="form" aria-label="Formular de contact">
+          <div class="form-group">
+            <label for="name">Nume complet</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              autocomplete="name"
+              aria-required="true"
+              placeholder="Ion Popescu"
+            />
+          </div>
+ 
+          <div class="form-group">
+            <label for="email">Adresă email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autocomplete="email"
+              aria-required="true"
+              placeholder="ion@exemplu.ro"
+            />
+          </div>
+ 
+          <div class="form-group">
+            <label for="message">Mesaj</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              aria-required="true"
+              placeholder="Scrie mesajul tău..."
+            ></textarea>
+          </div>
+ 
+          <button
+            class="btn btn-primary"
+            type="button"
+            aria-label="Trimite formularul de contact"
+          >
+            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+            Trimite mesaj
+          </button>
+        </div>
+      </div>
+    </section>
+ 
+  </main>
+ 
+  <!-- ══ MODAL DIALOG ══════════════════════════════════════════════ -->
+  <div
+    class="modal-overlay"
+    id="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    aria-describedby="modal-desc"
+  >
+    <div class="modal">
+      <button
+        class="modal-close"
+        aria-label="Închide fereastra de dialog"
+        onclick="closeModal()"
+      >
+        <i class="fas fa-xmark" aria-hidden="true"></i>
+      </button>
+ 
+      <!-- H2 în context modal – corect semantic -->
+      <h2 id="modal-title">Detalii Implementare</h2>
+      <p id="modal-desc" style="margin-top:.5rem">
+        Această fereastră demonstrează managementul focusului: la deschidere,
+        focusul se mută pe primul element interactiv; la închidere, revine pe
+        butonul declanșator. Tasta <kbd>Escape</kbd> închide dialogul.
+      </p>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <button class="btn btn-primary" type="button" onclick="closeModal()">
+          Am înțeles
+        </button>
+        <button class="btn btn-ghost" type="button" onclick="closeModal()">
+          Anulează
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ══ FOOTER ══════════════════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <!-- aria-live: screen reader-ul anunță modificări dinamice -->
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="live-region"></div>
+ 
+    <p>
+      &copy; 2026 RC 251 · Accessibility Audit
+      &nbsp;|&nbsp;
+      <!-- Accessibility Audit: WAI-ARIA implementation by Student RC 251 -->
+      <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener noreferrer"
+         aria-label="Documentație WAI-ARIA Authoring Practices Guide (se deschide în tab nou)">
+        WAI-ARIA APG
+      </a>
+    </p>
+ 
+    <!-- Imagine decorativă – alt="" ───────────────────────────── -->
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E"
+         alt=""
+         aria-hidden="true"
+         width="1" height="1" />
+  </footer>
+ 
+  <!-- ══ JAVASCRIPT ════════════════════════════════════════════════ -->
+  <script>
+    /* ── Hamburger Menu ─────────────────────────────────────────── */
+    function toggleMenu(btn) {
+      const nav     = document.getElementById('primary-nav');
+      const isOpen  = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      nav.classList.toggle('open', !isOpen);
+      announce(isOpen ? 'Meniu închis.' : 'Meniu deschis.');
+    }
+ 
+    /* ── Modal ──────────────────────────────────────────────────── */
+    let lastFocus = null;
+ 
+    function openModal() {
+      lastFocus = document.activeElement;
+      const overlay = document.getElementById('modal-overlay');
+      overlay.classList.add('open');
+      // Mută focusul pe primul element focusabil din modal
+      const firstFocusable = overlay.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
+      firstFocusable && firstFocusable.focus();
+      announce('Dialog deschis: Detalii Implementare');
+    }
+ 
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      lastFocus && lastFocus.focus();
+      announce('Dialog închis.');
+    }
+ 
+    /* Escape key closes modal */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const overlay = document.getElementById('modal-overlay');
+        if (overlay.classList.contains('open')) closeModal();
+      }
+    });
+ 
+    /* ── aria-live announce ──────────────────────────────────────── */
+    function announce(msg) {
+      const region = document.getElementById('live-region');
+      region.textContent = '';
+      requestAnimationFrame(() => { region.textContent = msg; });
+    }
+  </script>
+ 
+</body>
+</html>

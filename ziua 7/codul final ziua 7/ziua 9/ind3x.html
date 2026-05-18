@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Restaurant premium GUD din Chișinău.">
+
+    <title>GUD Restaurant</title>
+
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preload" as="image" href="assets/img/imag 1.webp" type="image/webp">
+
+    <!-- Final Quality Audit: Mobile Performance Optimized by Alexanocikin Nicolai -->
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8F0;
+            color: #5C4B43;
+        }
+
+        img,
+        iframe,
+        video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            color: #5C4B43;
+            text-decoration: none;
+        }
+
+        header {
+            min-height: 90px;
+            background-color: #F4E3D3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 10%;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #5C4B43;
+            font-weight: 500;
+        }
+
+        .hero {
+            min-height: 350px;
+            background-color: #FFD6B0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 40px 10%;
+            flex-wrap: wrap;
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 14px;
+            object-fit: cover;
+        }
+
+        .hero-text {
+            max-width: 450px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            line-height: 1.6;
+        }
+
+        .services,
+        .video-section,
+        .contact-section,
+        .schedule-section {
+            padding: 70px 10%;
+        }
+
+        .services h2,
+        .video-section h2,
+        .contact-title,
+        .schedule-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 35px;
+        }
+
+        .card {
+            flex: 1 1 calc(33.333% - 35px);
+            max-width: 320px;
+            min-width: 260px;
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(92, 75, 67, 0.2);
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 22px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 12px;
+        }
+
+        .card-content p {
+            line-height: 1.6;
+        }
+
+        .video-container {
+            max-width: 950px;
+            margin: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid #D9B99B;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            min-height: 520px;
+            border: none;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-form,
+        .contact-info {
+            background-color: white;
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid rgba(92, 75, 67, 0.15);
+        }
+
+        fieldset {
+            border: 1px solid rgba(92, 75, 67, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        legend {
+            padding: 0 10px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(92, 75, 67, 0.3);
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background-color: #D9B99B;
+            color: #5C4B43;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #C88E64;
+            color: white;
+        }
+
+        .contact-info iframe {
+            width: 100%;
+            min-height: 250px;
+            border: 4px solid #D9B99B;
+        }
+
+        .info-content {
+            padding-top: 25px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th {
+            background-color: #D9B99B;
+            color: #5C4B43;
+            font-weight: 600;
+        }
+
+        th,
+        td {
+            border: 1px solid rgba(92, 75, 67, 0.15);
+            padding: 18px;
+            text-align: center;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #FDF2E7;
+        }
+
+        footer {
+            background-color: #D9B99B;
+            padding: 35px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo span {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .footer-logo small {
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-info a {
+            text-decoration: none;
+            color: #5C4B43;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #5C4B43;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                flex: 1 1 calc(50% - 35px);
+            }
+
+            .video-container iframe {
+                min-height: 320px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+
+            .services,
+            .video-section,
+            .contact-section,
+            .schedule-section {
+                padding: 50px 5%;
+            }
+
+            .cards-container {
+                gap: 25px;
+            }
+
+            .card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .card img {
+                height: 220px;
+            }
+
+            .hero-text h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media print {
+
+            nav,
+            .social-links,
+            .submit-btn,
+            iframe,
+            footer {
+                display: none;
+            }
+
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+
+            section {
+                padding: 20px 0;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <a href="#" class="logo">GUD</a>
+
+        <nav>
+            <ul>
+                <li><a href="#">Acasă</a></li>
+                <li><a href="#services">Servicii</a></li>
+                <li><a href="#video">Despre</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <section class="hero">
+
+        <picture>
+            <source srcset="assets/img/imag 1.webp" type="image/webp">
+
+            <img
+                src="assets/img/imag 1.avif"
+                alt="Interior restaurant GUD — atmosferă elegantă"
+                class="hero-img"
+                width="400"
+                height="250">
+        </picture>
+
+        <div class="hero-text">
+
+            <h1>GUD<br>by Alexandru Comerzan</h1>
+
+            <p>
+                Bucătărie premium, preparate proaspete și atmosferă elegantă
+                pentru experiențe culinare memorabile.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="services" id="services">
+
+        <h2>SERVICII</h2>
+
+        <div class="cards-container">
+
+            <article class="card">
+
+                <img
+                    src="assets/img/imag 2.webp"
+                    alt="Livrare rapidă GUD Restaurant"
+                    loading="lazy"
+                    width="400"
+                    height="300">
+
+                <div class="card-content">
+                    <h3>Livrare Rapidă</h3>
+                    <p>Livrare rapidă și sigură oriunde în Chișinău.</p>
+                </div>
+
+            </article>
+
+            <article class="card">
+
+                <img
+                    src="assets/img/imag 3.webp"
+                    alt="Meniu premium cu ingrediente atent selecționate"
+                    loading="lazy"
+                    width="400"
+                    height="300">
+
+                <div class="card-content">
+                    <h3>Meniu Premium</h3>
+                    <p>Ingrediente atent selecționate și preparate speciale.</p>
+                </div>
+
+            </article>
+
+            <article class="card">
+
+                <img
+                    src="assets/img/imag 4.webp"
+                    alt="Rezervări online rapide pentru masa ta"
+                    loading="lazy"
+                    width="400"
+                    height="300">
+
+                <div class="card-content">
+                    <h3>Rezervări Online</h3>
+                    <p>Rezervă rapid masa direct din site.</p>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+    <section class="video-section" id="video">
+
+        <h2>VIDEO DE PREZENTARE</h2>
+
+        <div class="video-container">
+
+            <iframe
+                src="https://www.youtube.com/embed/vLTODg9rrQQ"
+                title="Video de prezentare restaurant GUD"
+                loading="lazy"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </section>
+
+    <section class="contact-section" id="contact">
+
+        <h2 class="contact-title">CONTACT</h2>
+
+        <div class="contact-grid">
+
+            <form class="contact-form" action="#" method="post">
+
+                <fieldset>
+
+                    <legend>Date personale</legend>
+
+                    <div class="form-group">
+                        <input type="text" placeholder="Nume complet" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" placeholder="Adresă email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="tel" placeholder="Număr telefon" required>
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+
+                    <legend>Mesaj</legend>
+
+                    <div class="form-group">
+                        <textarea placeholder="Scrie mesajul tău"></textarea>
+                    </div>
+
+                </fieldset>
+
+                <button type="submit" class="submit-btn">
+                    Trimite mesajul
+                </button>
+
+            </form>
+
+            <aside class="contact-info">
+
+                <iframe
+                    src="https://www.google.com/maps?q=Chisinau&output=embed"
+                    title="Locația restaurantului GUD pe hartă"
+                    loading="lazy">
+                </iframe>
+
+                <div class="info-content">
+
+                    <h3>Date Contact</h3>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Strada Mihail Sadoveanu 19, Chișinău</span>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+373 545 499</span>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>contact@gudrestaurant.md</span>
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

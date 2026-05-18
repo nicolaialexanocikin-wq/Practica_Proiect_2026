@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ro">
+ 
+<head>
+
+  <meta charset="UTF-8">
+ 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <title>Portofoliu Web Expert | RC 251 Alexanocikin Nicolai</title>
+  <meta name="description" content="Explorează proiectele de inginerie UI realizate de Alexanocikin Nicolai. Focus pe performanță, SEO semantic și arhitecturi CSS moderne. Contactează-mă astăzi!">
+  <meta name="keywords" content="portofoliu web, inginerie UI, HTML5, CSS3, SEO expert, RC 251, Alexanocikin Nicolai, frontend development">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://domeniu-elev.ro/index.html">
+  <meta name="author" content="Alexanocikin Nicolai">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://domeniu-elev.ro/index.html">
+  <meta property="og:title" content="Portofoliu Web Expert | Arhitectură de Înaltă Performanță">
+  <meta property="og:description" content="Sisteme UI scalabile și optimizate SEO, construite cu HTML5 semantic, CSS3 modern și best practices de inginerie web. Realizate de Alexanocikin Nicolai, RC 251.">
+  <meta property="og:image" content="assets/img/preview-site.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ro_RO">
+  <meta property="og:site_name" content="Portofoliu RC 251">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portofoliu Web Expert | RC 251 Alexanocikin Nicolai">
+  <meta name="twitter:description" content="Explorează proiectele de inginerie UI. SEO semantic și arhitecturi CSS moderne de nivel expert.">
+  <meta name="twitter:image" content="assets/img/preview-site.jpg">
+ 
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+ 
+  <meta name="theme-color" content="#00f2ff">
+ 
+  <link rel="manifest" href="site.webmanifest">
+
+  <style>
+    /* Reset și variabile CSS */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --color-bg: #0a0e1a;
+      --color-surface: #111827;
+      --color-accent: #00f2ff;
+      --color-accent-2: #7c3aed;
+      --color-text: #e2e8f0;
+      --color-text-muted: #94a3b8;
+      --color-border: #1e293b;
+      --font-heading: 'Courier New', monospace;
+      --font-body: Georgia, 'Times New Roman', serif;
+    }
+ 
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.7;
+    }
+ 
+    /* ── HEADER ── */
+    header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+ 
+    header .logo {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      color: var(--color-accent);
+      letter-spacing: 0.1em;
+    }
+ 
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+ 
+    nav a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+ 
+    nav a:hover { color: var(--color-accent); }
+ 
+    /* ── MAIN ── */
+    main { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+ 
+    /* ── HERO SECTION ── */
+    .hero {
+      text-align: center;
+      padding: 4rem 0 3rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 3rem;
+    }
+ 
+    /* [SEO] h1: UN SINGUR h1 PE PAGINĂ — conține cuvântul cheie principal */
+    h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--color-accent);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+ 
+    .hero p {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+ 
+    .cta-button {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      padding: 0.8rem 2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: bold;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+ 
+    .cta-button:hover { opacity: 0.85; }
+ 
+    /* ── SECTIONS ── */
+    section { margin-bottom: 3rem; }
+ 
+    /* [SEO] h2: Subtitruri de secțiune — respectă ierarhia h1 → h2 */
+    h2 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--color-text);
+      border-left: 3px solid var(--color-accent);
+      padding-left: 1rem;
+      margin-bottom: 1.5rem;
+    }
+ 
+    /* [SEO] h3: Sub-secțiuni — respectă ierarhia h2 → h3, NU sari de la h2 la h4! */
+    h3 {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+ 
+    /* ── ARTICLES (Carduri de Proiect) ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+ 
+    /* [SEMANTIC] <article> = conținut independent, redistribuibil */
+    article {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+ 
+    article:hover { border-color: var(--color-accent); }
+ 
+    article p {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+ 
+    article .tag {
+      display: inline-block;
+      background: rgba(0, 242, 255, 0.1);
+      color: var(--color-accent);
+      border: 1px solid rgba(0, 242, 255, 0.3);
+      border-radius: 3px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.75rem;
+      font-family: var(--font-heading);
+      margin-top: 1rem;
+    }
+ 
+    /* ── ABOUT SECTION ── */
+    .about-content {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+ 
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      list-style: none;
+    }
+ 
+    .skills-list li {
+      background: rgba(124, 58, 237, 0.15);
+      color: #a78bfa;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: 3px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: var(--font-heading);
+    }
+ 
+    /* ── CONTACT SECTION ── */
+    .contact-info {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+    }
+ 
+    .contact-info p { color: var(--color-text-muted); margin-bottom: 1rem; }
+ 
+    /* ── FOOTER ── */
+    /* [SEMANTIC] <footer> = informații secundare: copyright, links, autor */
+    footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      font-family: var(--font-heading);
+    }
+ 
+    footer .seo-badge {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.3rem 1rem;
+      background: rgba(0, 242, 255, 0.05);
+      border: 1px solid rgba(0, 242, 255, 0.2);
+      border-radius: 20px;
+      color: var(--color-accent);
+      font-size: 0.75rem;
+    }
+  </style>
+ 
+</head>
+ 
+<body>
+  <header>
+    <div class="logo">&lt;RC251.DEV/&gt;</div>
+    <nav aria-label="Navigare principală">
+      <ul>
+        <li><a href="#proiecte">Proiecte</a></li>
+        <li><a href="#despre">Despre</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="titlu-principal">
+ 
+      <h1 id="titlu-principal">Portofoliu Web Expert</h1>
+ 
+      <p>
+        Proiecte de inginerie UI realizate de <strong>Alexanocikin Nicolai</strong>,
+        student RC 251. Specializat în structuri HTML5 semantice,
+        arhitecturi CSS moderne și optimizare SEO de nivel expert.
+      </p>
+ 
+      <a href="#proiecte" class="cta-button">Explorează Proiectele</a>
+    </section>
+ 
+    <section id="proiecte" aria-labelledby="titlu-proiecte">
+ 
+      <h2 id="titlu-proiecte">Proiecte Realizate</h2>
+ 
+      <div class="projects-grid">
+ 
+        <article>
+          <h3>Meta-Arhitectură SEO</h3>
+          <p>
+            Implementarea unui sistem complet de metadate: Open Graph,
+            Twitter Cards, canonical URLs și semantic HTML5.
+          </p>
+          <span class="tag">HTML5 · SEO · Ziua 9</span>
+        </article>
+ 
+        <article>
+          <h3>Layout CSS Grid Avansat</h3>
+          <p>
+            Sistem de grilă responsiv cu coloane auto-adaptabile,
+            zone numite și fallback-uri pentru browsere vechi.
+          </p>
+          <span class="tag">CSS3 · Grid · Responsive</span>
+        </article>
+ 
+        <article>
+          <h3>Formulare Accesibile</h3>
+          <p>
+            Formulare cu validare nativă HTML5, atribute ARIA
+            și design accesibil conform ghidurilor WCAG 2.1.
+          </p>
+          <span class="tag">HTML5 · Accesibilitate · UX</span>
+        </article>
+ 
+      </div>
+    </section>
+ 
+ 
+    <!-- ── SECȚIUNEA DESPRE ── -->
+    <section id="despre" aria-labelledby="titlu-despre">
+      <h2 id="titlu-despre">Despre Autor</h2>
+ 
+      <div class="about-content">
+        <p>
+          Student în cadrul grupei <strong>RC 251</strong>, specializat în
+          dezvoltare frontend și inginerie web. Această serie de 30 de zile
+          documentează parcursul de la HTML de bază la expert-level.
+        </p>
+        <ul class="skills-list" aria-label="Competențe tehnice">
+          <li>HTML5 Semantic</li>
+          <li>CSS3 Modern</li>
+          <li>SEO On-Page</li>
+          <li>Open Graph</li>
+          <li>Responsive Design</li>
+          <li>Accesibilitate WCAG</li>
+        </ul>
+      </div>
+    </section>
+ 
+ 
+    <section id="contact" aria-labelledby="titlu-contact">
+      <h2 id="titlu-contact">Contact</h2>
+ 
+      <div class="contact-info">
+        <p>
+          Interesat de colaborare sau ai întrebări despre proiecte?
+          Nu ezita să mă contactezi.
+        </p>
+        <address>
+          <a href="mailto:alexanocikin.nicolai@student.ro" class="cta-button">
+            Trimite Email
+          </a>
+        </address>
+      </div>
+    </section>
+ 
+  </main>
+  <footer>
+    <p>&copy; 2026 Alexanocikin Nicolai · RC 251 · Toate drepturile rezervate</p>
+    <p class="seo-badge">
+      ✓ SEO Audit realizat de: Alexanocikin Nicolai | Ziua 9
+    </p>
+  </footer>
+ 
+</body>
+</html>

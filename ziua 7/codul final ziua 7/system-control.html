@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <!-- ══════════════════════════════════════════════════
+       🔒 TASK B — CONTENT SECURITY POLICY (CSP)
+       Restricționează scripturile doar la 'self'.
+       Sursele externe (CDN-uri necunoscute) sunt blocate.
+  ══════════════════════════════════════════════════ -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline';
+                 style-src 'self' 'unsafe-inline';
+                 img-src 'self' data:;
+                 font-src 'self';
+                 connect-src 'none';
+                 object-src 'none';
+                 base-uri 'self';
+                 form-action 'self';">
+ 
+  <title>Quantum UI System — Expert RC 251</title>
+  <style>
+ 
+    /* ============================================================
+       1. ATOMIC DESIGN — THEMING ENGINE
+       Primitive → Semantic → Component
+    ============================================================ */
+ 
+    :root {
+      /* ── PRIMITIVES ── */
+      --primitive-cyan-100:  #ccfffe;
+      --primitive-cyan-400:  #00f2ff;
+      --primitive-cyan-600:  #00bcd4;
+      --primitive-blue-400:  #4f8fff;
+      --primitive-blue-500:  #2563eb;
+      --primitive-blue-900:  #0a1628;
+      --primitive-red-400:   #ff2d55;
+      --primitive-green-400: #00e676;
+      --primitive-amber-400: #ffd740;
+      --primitive-white:     #f0f4ff;
+      --primitive-gray-100:  #e8eaf6;
+      --primitive-gray-300:  #9a9ab8;
+      --primitive-gray-500:  #4a4a6a;
+      --primitive-gray-700:  #1e1e30;
+      --primitive-gray-900:  #0a0a18;
+ 
+      --primitive-space-1:   4px;
+      --primitive-space-2:   8px;
+      --primitive-space-3:   12px;
+      --primitive-space-4:   16px;
+      --primitive-space-5:   20px;
+      --primitive-space-6:   24px;
+      --primitive-space-8:   32px;
+      --primitive-space-12:  48px;
+ 
+      --primitive-radius-sm:   4px;
+      --primitive-radius-md:   8px;
+      --primitive-radius-lg:   16px;
+      --primitive-radius-xl:   24px;
+      --primitive-radius-full: 9999px;
+ 
+      --primitive-duration-fast:   150ms;
+      --primitive-duration-normal: 300ms;
+      --primitive-duration-slow:   600ms;
+      --primitive-easing-spring:   cubic-bezier(0.5, 1.5, 0.5, 1);
+      --primitive-easing-out:      cubic-bezier(0.22, 1, 0.36, 1);
+ 
+      /* ── SEMANTICS ── */
+      --color-bg-page:           #0d1117;
+      --color-bg-surface:        #12121e;
+      --color-bg-elevated:       #1a1a2e;
+      --color-bg-glass:          rgba(255,255,255,0.04);
+      --color-bg-glass-border:   rgba(255,255,255,0.10);
+ 
+      --color-text-primary:      var(--primitive-white);
+      --color-text-secondary:    var(--primitive-gray-300);
+      --color-text-disabled:     var(--primitive-gray-500);
+      --color-text-accent:       var(--primitive-cyan-400);
+ 
+      --color-border-default:    var(--primitive-gray-500);
+      --color-border-focus:      var(--primitive-blue-400);
+      --color-border-valid:      var(--primitive-green-400);
+      --color-border-invalid:    var(--primitive-red-400);
+      --color-border-accent:     var(--primitive-cyan-600);
+ 
+      --color-glow-cyan:         rgba(0, 242, 255, 0.35);
+      --color-glow-blue:         rgba(37, 99, 235, 0.50);
+      --color-glow-red:          rgba(255, 45, 85, 0.50);
+      --color-glow-green:        rgba(0, 230, 118, 0.50);
+ 
+      /* ── COMPONENTS ── */
+      --comp-card-bg:            var(--color-bg-glass);
+      --comp-card-border:        var(--color-bg-glass-border);
+      --comp-card-radius:        var(--primitive-radius-xl);
+ 
+      --comp-input-height:       52px;
+      --comp-input-bg:           var(--color-bg-elevated);
+      --comp-input-radius:       var(--primitive-radius-md);
+      --comp-input-border-w:     2px;
+ 
+      --comp-btn-height:         52px;
+      --comp-btn-radius:         var(--primitive-radius-md);
+      --comp-btn-disabled-bg:    var(--color-bg-elevated);
+      --comp-btn-active-bg:      var(--primitive-blue-500);
+ 
+      --comp-label-default:      0.875rem;
+      --comp-label-float:        0.72rem;
+ 
+      /* ── NEURAL ENGINE (mouse-driven) ── */
+      --p:            2000px;
+      --rx:           0deg;
+      --ry:           0deg;
+      --shadow-x:     0px;
+      --shadow-y:     30px;
+      --light-x:      50%;
+      --light-y:      50%;
+      --glitch-offset:2px;
+ 
+      --base-delay:   100ms;
+    }
+ 
+    /* ── DARK THEME OVERRIDE ── */
+    .dark-theme {
+      --color-bg-page:          #060608;
+      --color-bg-surface:       #0a0a10;
+      --color-bg-elevated:      #111118;
+      --color-bg-glass:         rgba(255,255,255,0.02);
+      --color-bg-glass-border:  rgba(255,255,255,0.06);
+      --color-text-primary:     #c8d0e8;
+      --color-text-secondary:   #6a6a90;
+      --color-text-disabled:    #3a3a52;
+      --color-text-accent:      #00d4e8;
+      --color-border-default:   #2a2a48;
+      --color-glow-cyan:        rgba(0,212,232,0.20);
+    }
+ 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--color-bg-page);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 20% -10%, rgba(0,242,255,0.06), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(37,99,235,0.08), transparent);
+      color: var(--color-text-primary);
+      overflow-x: hidden;
+      transition:
+        background-color var(--primitive-duration-slow) ease,
+        color var(--primitive-duration-slow) ease;
+    }
+ 
+    /* ============================================================
+       THEME TOGGLE
+    ============================================================ */
+    .theme-toggle {
+      position: fixed;
+      top: var(--primitive-space-5);
+      right: var(--primitive-space-5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-space-2);
+      padding: var(--primitive-space-2) var(--primitive-space-4);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--primitive-radius-full);
+      color: var(--color-text-secondary);
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      transition: all var(--primitive-duration-normal) ease;
+    }
+    .theme-toggle:hover {
+      border-color: var(--color-text-accent);
+      color: var(--color-text-accent);
+    }
+    .theme-toggle__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-text-accent);
+      transition: background var(--primitive-duration-normal);
+    }
+ 
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      text-align: center;
+      padding: 80px var(--primitive-space-6) 40px;
+    }
+    .hero__label {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--color-text-accent);
+      border: 1px solid var(--color-border-accent);
+      border-radius: var(--primitive-radius-full);
+      padding: 4px 14px;
+      margin-bottom: var(--primitive-space-5);
+      text-transform: uppercase;
+    }
+    .hero__title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: var(--primitive-space-4);
+      background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero__sub {
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+ 
+    /* ============================================================
+       2. STAGGERED ENTRANCE — GPU ORCHESTRATION GRID
+    ============================================================ */
+    .orchestrator {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--primitive-space-6) var(--primitive-space-6) var(--primitive-space-12);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--primitive-space-5);
+    }
+ 
+    @keyframes entrance {
+      0% {
+        opacity: 0;
+        transform: perspective(1000px) rotateX(-18deg) translateY(50px) scale(0.92);
+        filter: blur(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: perspective(1000px) rotateX(0deg) translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+ 
+    @keyframes textReveal {
+      from { clip-path: inset(0 100% 0 0); opacity: 0; }
+      to   { clip-path: inset(0 0 0 0);    opacity: 1; }
+    }
+ 
+    .service-wrapper {
+      --exp-delay: calc(var(--i) * var(--i) * 80ms);
+      opacity: 0;
+      will-change: transform, opacity, filter;
+      transform: translateZ(0);
+      animation: entrance 1s var(--primitive-easing-spring) forwards;
+      animation-delay: calc(var(--base-delay) + var(--exp-delay));
+    }
+ 
+    .service-card {
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-space-5);
+      padding: var(--primitive-space-5) var(--primitive-space-6);
+      border-radius: var(--comp-card-radius);
+      background: var(--comp-card-bg);
+      border: 1px solid var(--comp-card-border);
+      backdrop-filter: blur(20px);
+      transition: transform 0.35s var(--primitive-easing-out),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(0, 242, 255, 0.25);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px var(--color-glow-cyan);
+    }
+ 
+    .service-card__icon {
+      min-width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--primitive-radius-lg);
+      font-size: 1.8rem;
+      background: rgba(0, 242, 255, 0.06);
+      border: 1px solid rgba(0, 242, 255, 0.12);
+      flex-shrink: 0;
+    }
+ 
+    .service-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+ 
+    .service-card__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      opacity: 0;
+      animation: textReveal 0.6s ease-out forwards;
+      animation-delay: calc(var(--base-delay) + var(--exp-delay) + 400ms);
+    }
+ 
+    .service-card__desc {
+      font-size: 0.82rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      opacity: 0;
+      animation: textReveal 0.6s ease-out forwards;
+      animation-delay: calc(var(--base-delay) + var(--exp-delay) + 550ms);
+    }
+ 
+    .service-card__badge {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-accent);
+      border: 1px solid var(--color-border-accent);
+      border-radius: var(--primitive-radius-full);
+      padding: 2px 8px;
+    }
+ 
+    /* ============================================================
+       3. NEURAL GLASS — HOLOGRAM CENTERPIECE
+    ============================================================ */
+    .neural-section {
+      width: 100%;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      perspective: var(--p);
+      overflow: hidden;
+      isolation: isolate;
+      padding: var(--primitive-space-12) var(--primitive-space-6);
+      position: relative;
+    }
+ 
+    .neural-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 50%,
+          rgba(0, 242, 255, 0.04), transparent 70%);
+      pointer-events: none;
+    }
+ 
+    .spatial-anchor {
+      position: relative;
+      width: 380px;
+      height: 520px;
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx)) rotateY(var(--ry));
+      transition: transform 0.06s linear;
+      will-change: transform;
+      isolation: isolate;
+      border-radius: 32px;
+      filter: drop-shadow(var(--shadow-x) var(--shadow-y) 50px rgba(0,0,0,0.7));
+      backface-visibility: hidden;
+    }
+ 
+    .layer {
+      position: absolute;
+      inset: 0;
+      border-radius: 32px;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+ 
+    .layer--core {
+      background: radial-gradient(circle, var(--color-glow-cyan), transparent 70%);
+      transform: translateZ(-40px);
+      filter: blur(60px);
+      mix-blend-mode: screen;
+    }
+ 
+    .layer--glass {
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(40px) saturate(200%) contrast(110%);
+      border: 1px solid var(--color-bg-glass-border);
+      transform: translateZ(20px);
+    }
+ 
+    .layer--specular {
+      background: radial-gradient(
+        circle at var(--light-x) var(--light-y),
+        rgba(255,255,255,0.22), transparent 45%
+      );
+      mix-blend-mode: color-dodge;
+      transform: translateZ(140px);
+      pointer-events: none;
+    }
+ 
+    .layer--data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      transform: translateZ(90px);
+      text-align: center;
+      padding: var(--primitive-space-6);
+    }
+ 
+    .neural-header,
+    .neural-stats {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--color-text-accent);
+      text-transform: uppercase;
+    }
+ 
+    .neural-divider {
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-text-accent), transparent);
+      opacity: 0.4;
+    }
+ 
+    .glitch-text {
+      position: relative;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--color-text-primary);
+      transform: translateZ(110px);
+      text-shadow:
+        calc(var(--glitch-offset) * -1) 0 var(--primitive-red-400),
+        var(--glitch-offset) 0 var(--primitive-cyan-400);
+      animation: glitchPulse 3s infinite;
+      letter-spacing: 0.05em;
+    }
+    .glitch-text::before,
+    .glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      opacity: 0.75;
+    }
+    .glitch-text::before {
+      color: var(--primitive-red-400);
+      transform: translateX(calc(var(--glitch-offset) * -1));
+    }
+    .glitch-text::after {
+      color: var(--primitive-cyan-400);
+      transform: translateX(var(--glitch-offset));
+    }
+ 
+    @keyframes glitchPulse {
+      0%,88%,100% { filter: none; }
+      90%  { filter: blur(1.5px); }
+      93%  { filter: contrast(220%) brightness(130%); }
+      96%  { filter: brightness(160%); }
+    }
+ 
+    .layer--orbital {
+      display: grid;
+      place-items: center;
+      transform: translateZ(200px);
+      pointer-events: none;
+    }
+    .satellite {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--primitive-cyan-400);
+      box-shadow: 0 0 30px var(--primitive-cyan-400), 0 0 60px var(--color-glow-cyan);
+      mix-blend-mode: screen;
+      animation: orbit 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes orbit {
+      0%,100% {
+        transform: translateX(-140px) translateZ(-80px) scale(0.75);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translateX(140px) translateZ(110px) scale(1.2);
+        opacity: 1;
+      }
+    }
+ 
+    /* ============================================================
+       4. BEM ACCESS FORM — SECURITATE
+    ============================================================ */
+    .security-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--primitive-space-12) var(--primitive-space-6);
+      gap: var(--primitive-space-6);
+    }
+ 
+    .security-section__heading { text-align: center; }
+ 
+    .security-section__title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+      margin-bottom: var(--primitive-space-2);
+    }
+ 
+    .security-section__sub {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.06em;
+    }
+ 
+    /* 🔒 BADGE SECURITATE */
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 230, 118, 0.06);
+      border: 1px solid rgba(0, 230, 118, 0.25);
+      border-radius: var(--primitive-radius-md);
+      padding: 10px 16px;
+      font-size: 0.78rem;
+      color: var(--primitive-green-400);
+      letter-spacing: 0.06em;
+      max-width: 480px;
+      width: 100%;
+    }
+    .security-badge__icon { font-size: 1rem; flex-shrink: 0; }
+    .security-badge__items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .security-badge__tag {
+      background: rgba(0, 230, 118, 0.10);
+      border: 1px solid rgba(0, 230, 118, 0.30);
+      border-radius: var(--primitive-radius-full);
+      padding: 2px 8px;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+ 
+    .access-form {
+      width: 100%;
+      max-width: 480px;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--primitive-radius-xl);
+      padding: var(--primitive-space-8);
+      transition:
+        border-color var(--primitive-duration-normal) ease,
+        box-shadow var(--primitive-duration-normal) ease;
+    }
+ 
+    .access-form:focus-within {
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 1px var(--color-border-focus),
+                  0 0 24px var(--color-glow-blue);
+    }
+ 
+    .access-form__title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: var(--primitive-space-6);
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-space-3);
+    }
+    .access-form__title-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--primitive-radius-md);
+      background: rgba(0,242,255,0.08);
+      border: 1px solid var(--color-border-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+ 
+    .access-form__group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--primitive-space-5);
+      margin-bottom: var(--primitive-space-6);
+    }
+ 
+    .access-form__checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-space-3);
+      margin-bottom: var(--primitive-space-6);
+      cursor: pointer;
+    }
+    .access-form__checkbox-label {
+      font-size: 0.83rem;
+      color: var(--color-text-secondary);
+      user-select: none;
+    }
+ 
+    /* ── FIELD ── */
+    .field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+ 
+    .field__row {
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-space-2);
+    }
+ 
+    .field__wrapper {
+      position: relative;
+      flex: 1;
+    }
+ 
+    .field__input {
+      width: 100%;
+      height: var(--comp-input-height);
+      padding: var(--primitive-space-5) var(--primitive-space-4) var(--primitive-space-2);
+      background: var(--comp-input-bg);
+      border: var(--comp-input-border-w) solid var(--color-border-default);
+      border-radius: var(--comp-input-radius);
+      color: var(--color-text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--primitive-duration-normal) ease,
+                  box-shadow var(--primitive-duration-normal) ease;
+    }
+ 
+    .field__label {
+      position: absolute;
+      left: var(--primitive-space-4);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: var(--comp-label-default);
+      color: var(--color-text-secondary);
+      pointer-events: none;
+      transition:
+        top var(--primitive-duration-normal) ease,
+        font-size var(--primitive-duration-normal) ease,
+        color var(--primitive-duration-normal) ease,
+        transform var(--primitive-duration-normal) ease;
+    }
+ 
+    .field__indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-text-disabled);
+      flex-shrink: 0;
+      transition: background var(--primitive-duration-normal) ease;
+    }
+ 
+    /* 🔒 MESAJ EROARE VALIDARE */
+    .field__error {
+      font-size: 0.72rem;
+      color: var(--primitive-red-400);
+      letter-spacing: 0.04em;
+      padding-left: var(--primitive-space-4);
+      min-height: 16px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    /* Se afișează când input-ul e invalid și a fost atins */
+    .field__input:invalid:not(:placeholder-shown) ~ .field__error {
+      opacity: 1;
+    }
+ 
+    /* ── STATE MACHINE: Floating Label ── */
+    .field__input:placeholder-shown + .field__label {
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: var(--comp-label-default);
+      color: var(--color-text-secondary);
+    }
+    .field__input:focus + .field__label,
+    .field__input:not(:placeholder-shown) + .field__label {
+      top: 8px;
+      transform: translateY(0);
+      font-size: var(--comp-label-float);
+      color: var(--color-border-focus);
+    }
+ 
+    .field__input:focus {
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px var(--color-glow-blue);
+    }
+    .field__input:valid:not(:placeholder-shown) {
+      border-color: var(--color-border-valid);
+    }
+    .field__input:invalid:not(:placeholder-shown) {
+      border-color: var(--color-border-invalid);
+    }
+ 
+    @keyframes indicator-pop {
+      0%   { transform: scale(0.6); }
+      60%  { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+ 
+    .field__input:focus ~ .field__row .field__indicator {
+      background: var(--color-border-focus);
+      box-shadow: 0 0 8px var(--color-glow-blue);
+      animation: indicator-pop var(--primitive-duration-fast) ease;
+    }
+    .field__input:valid:not(:placeholder-shown) ~ .field__row .field__indicator {
+      background: var(--color-border-valid);
+      box-shadow: 0 0 8px var(--color-glow-green);
+      animation: indicator-pop var(--primitive-duration-fast) ease;
+    }
+    .field__input:invalid:not(:placeholder-shown) ~ .field__row .field__indicator {
+      background: var(--color-border-invalid);
+      box-shadow: 0 0 8px var(--color-glow-red);
+      animation: indicator-pop var(--primitive-duration-fast) ease;
+    }
+ 
+    .field__input:valid:not(:placeholder-shown) + .field__label {
+      color: var(--color-border-valid);
+    }
+    .field__input:invalid:not(:placeholder-shown) + .field__label {
+      color: var(--color-border-invalid);
+    }
+ 
+    /* ── CHECKBOX ── */
+    .checkbox__input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-border-focus);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+ 
+    /* ── SERVICES CONTAINER ── */
+    .services-container {
+      min-height: 48px;
+      border: 1px dashed var(--color-border-default);
+      border-radius: var(--primitive-radius-md);
+      padding: var(--primitive-space-3);
+      position: relative;
+      margin-bottom: var(--primitive-space-6);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--primitive-space-2);
+      transition: border-color var(--primitive-duration-normal);
+    }
+    .services-container:empty::before {
+      content: "Niciun modul selectat";
+      color: var(--color-text-disabled);
+      font-size: 0.8rem;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.04em;
+    }
+    .services-container__tag {
+      background: rgba(79, 143, 255, 0.08);
+      border: 1px solid var(--color-border-focus);
+      color: var(--color-border-focus);
+      padding: 3px var(--primitive-space-3);
+      border-radius: var(--primitive-radius-full);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+ 
+    .demo-btns {
+      display: flex;
+      gap: var(--primitive-space-2);
+      margin-bottom: var(--primitive-space-6);
+      flex-wrap: wrap;
+    }
+    .demo-btn {
+      padding: 4px var(--primitive-space-3);
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      color: var(--color-text-primary);
+      border-radius: var(--primitive-radius-full);
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color var(--primitive-duration-fast),
+                  color var(--primitive-duration-fast);
+    }
+    .demo-btn:hover {
+      border-color: var(--color-border-focus);
+      color: var(--color-border-focus);
+    }
+    .demo-btn--danger:hover {
+      border-color: var(--color-border-invalid);
+      color: var(--color-border-invalid);
+    }
+ 
+    .btn {
+      height: var(--comp-btn-height);
+      width: 100%;
+      border: none;
+      border-radius: var(--comp-btn-radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-family: inherit;
+      cursor: not-allowed;
+    }
+ 
+    .access-form__submit {
+      background: var(--comp-btn-disabled-bg);
+      color: var(--color-text-disabled);
+      border: 1px solid var(--color-border-default);
+      pointer-events: none;
+      transition: all var(--primitive-duration-normal) ease;
+    }
+ 
+    @keyframes pulse-glow {
+      0%,100% {
+        box-shadow: 0 0 0 0 var(--color-glow-blue);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 0 10px transparent, 0 0 30px var(--color-glow-blue);
+        transform: scale(1.015);
+      }
+    }
+ 
+    .access-form:has(.field__input[name="email"]:valid:not(:placeholder-shown)):has(.field__input[name="password"]:valid:not(:placeholder-shown)):has(.checkbox__input:checked)
+    .access-form__submit {
+      background: var(--comp-btn-active-bg);
+      color: var(--color-text-primary);
+      border: none;
+      pointer-events: auto;
+      cursor: pointer;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+ 
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer {
+      text-align: center;
+      padding: var(--primitive-space-8) var(--primitive-space-6) var(--primitive-space-12);
+      color: var(--color-text-disabled);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      border-top: 1px solid var(--color-bg-glass-border);
+    }
+ 
+  </style>
+</head>
+<body>
+ 
+  <!-- THEME TOGGLE -->
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+    <span class="theme-toggle__dot" id="themeToggleDot"></span>
+    <span id="themeToggleLabel">DARK MODE</span>
+  </button>
+ 
+  <!-- ══════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="hero__label">Alexanocikin Nicolai RC 251 — Quantum UI System</div>
+    <h1 class="hero__title">Neural Interface<br>Orchestration</h1>
+    <p class="hero__sub">Theming · GPU Layers · 3D Spatial · CSS State Machine</p>
+  </header>
+ 
+  <!-- ══════════════════════════════════════════════════
+       GRID SERVICII
+  ══════════════════════════════════════════════════ -->
+  <section class="orchestrator" aria-label="Servicii active">
+ 
+    <article class="service-wrapper" style="--i:1">
+      <div class="service-card">
+        <div class="service-card__icon">🚀</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">GPU Rendering</h3>
+          <p class="service-card__desc">Fiecare card rulează pe propriul compositor layer. will-change activat.</p>
+          <span class="service-card__badge">Layer: GPU</span>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="service-wrapper" style="--i:2">
+      <div class="service-card">
+        <div class="service-card__icon">⚡</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Micro-Sincronizare</h3>
+          <p class="service-card__desc">Animații chained cu delay exponențial calculat prin CSS custom properties.</p>
+          <span class="service-card__badge">Chained Animations</span>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="service-wrapper" style="--i:3">
+      <div class="service-card">
+        <div class="service-card__icon">🎯</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">CLS Optimization</h3>
+          <p class="service-card__desc">Zero layout shift. Transforms și opacity exclusiv pentru animații.</p>
+          <span class="service-card__badge">CLS: 0.00</span>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="service-wrapper" style="--i:4">
+      <div class="service-card">
+        <div class="service-card__icon">🧠</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Theming Engine</h3>
+          <p class="service-card__desc">Atomic Design: Primitive → Semantic → Component. Dark mode prin variabile semantice.</p>
+          <span class="service-card__badge">Dark Mode Ready</span>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="service-wrapper" style="--i:5">
+      <div class="service-card">
+        <div class="service-card__icon">📡</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">Specular Tracking</h3>
+          <p class="service-card__desc">Mouse-tracking live: rotație 3D, shadow dinamic, specular highlight și glitch offset.</p>
+          <span class="service-card__badge">60fps Smooth</span>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="service-wrapper" style="--i:6">
+      <div class="service-card">
+        <div class="service-card__icon">🔐</div>
+        <div class="service-card__body">
+          <h3 class="service-card__title">CSS State Machine</h3>
+          <p class="service-card__desc">Validare formular fără JS: :valid, :has(), floating labels și glow neon.</p>
+          <span class="service-card__badge">Zero JS Logic</span>
+        </div>
+      </div>
+    </article>
+ 
+  </section>
+ 
+  <!-- ══════════════════════════════════════════════════
+       NEURAL GLASS — HOLOGRAM CENTERPIECE
+  ══════════════════════════════════════════════════ -->
+  <main class="neural-section" aria-label="Neural Interface">
+    <div class="spatial-anchor" id="anchor">
+      <div class="layer layer--core"></div>
+      <div class="layer layer--glass"></div>
+      <div class="layer layer--data">
+        <div class="neural-header">SYSTEM_STATUS :: ACTIVE</div>
+        <div class="neural-divider"></div>
+        <h2 class="glitch-text" data-text="NEURAL_LINK">NEURAL_LINK</h2>
+        <div class="neural-divider"></div>
+        <div class="neural-stats">LATENCY: 0.002ms &nbsp;|&nbsp; UPTIME: 99.97%</div>
+      </div>
+      <div class="layer layer--orbital">
+        <div class="satellite"></div>
+      </div>
+      <div class="layer layer--specular"></div>
+    </div>
+  </main>
+ 
+  <!-- ══════════════════════════════════════════════════
+       ACCES SECURIZAT — BEM FORM + HARDENING SECURITATE
+  ══════════════════════════════════════════════════ -->
+  <section class="security-section" aria-label="Acces Securizat">
+ 
+    <div class="security-section__heading">
+      <h2 class="security-section__title">Acces Securizat</h2>
+      <p class="security-section__sub">BEM · CSS :has() Gatekeeper · HTML5 Input Hardening</p>
+    </div>
+ 
+    <!-- 🔒 BADGE: măsuri de securitate active -->
+    <div class="security-badge" role="status" aria-label="Măsuri de securitate active">
+      <span class="security-badge__icon">🛡️</span>
+      <div class="security-badge__items">
+        <span class="security-badge__tag">✓ CSP HEADER</span>
+        <span class="security-badge__tag">✓ INPUT VALIDATION</span>
+        <span class="security-badge__tag">✓ PATTERN MATCHING</span>
+        <span class="security-badge__tag">✓ MAXLENGTH</span>
+        <span class="security-badge__tag">✓ FORM-ACTION SELF</span>
+      </div>
+    </div>
+ 
+    <!--
+      🔒 TASK A — VALIDARE INPUT HTML5
+      Modificări aplicate față de versiunea originală:
+      • Eliminat `novalidate` de pe <form> → activează validarea nativă a browserului
+      • Email: maxlength="100" (limită rezonabilă)
+      • Password: minlength="8" (best practice NIST), maxlength="128"
+      • Access Code: pattern="[A-Z0-9]{6}" (existent, păstrat), maxlength="6" (nou)
+      • Nume: required, pattern="[A-Za-zÀ-ÿ ]{2,50}", maxlength="50" (câmp nou adăugat)
+      • Telefon: pattern="[+]?[0-9]{7,15}", maxlength="15" (câmp nou adăugat)
+      • Toate câmpurile au atribut `title` cu descrierea formatului cerut
+      • autocomplete="off" păstrat pe form (securitate)
+    -->
+    <form class="access-form" autocomplete="off" action="#" method="post">
+ 
+      <div class="access-form__title">
+        <span class="access-form__title-icon">🔐</span>
+        Autentificare Securizată
+      </div>
+ 
+      <div class="access-form__group">
+ 
+        <!-- NUME COMPLET — câmp nou cu validare pattern -->
+        <div class="field">
+          <div class="field__wrapper">
+            <input
+              class="field__input"
+              type="text"
+              name="full_name"
+              id="full_name"
+              placeholder=" "
+              required
+              pattern="[A-Za-zÀ-ÿăâîșțĂÂÎȘȚ ]{2,50}"
+              maxlength="50"
+              title="Nume complet: 2-50 caractere, doar litere și spații"
+              autocomplete="name"
+            >
+            <label class="field__label" for="full_name">Nume complet</label>
+          </div>
+          <span class="field__indicator" aria-hidden="true"></span>
+          <span class="field__error" aria-live="polite">⚠ Minim 2 litere, fără cifre sau caractere speciale</span>
+        </div>
+ 
+        <!-- EMAIL -->
+        <div class="field">
+          <div class="field__wrapper">
+            <input
+              class="field__input"
+              type="email"
+              name="email"
+              id="email"
+              placeholder=" "
+              required
+              maxlength="100"
+              title="Introduceți o adresă de email validă (ex: utilizator@domeniu.com)"
+              autocomplete="email"
+            >
+            <label class="field__label" for="email">Adresă email</label>
+          </div>
+          <span class="field__indicator" aria-hidden="true"></span>
+          <span class="field__error" aria-live="polite">⚠ Format invalid — ex: utilizator@domeniu.com</span>
+        </div>
+ 
+        <!-- TELEFON — câmp nou cu validare pattern -->
+        <div class="field">
+          <div class="field__wrapper">
+            <input
+              class="field__input"
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder=" "
+              required
+              pattern="[+]?[0-9]{7,15}"
+              maxlength="15"
+              title="Număr de telefon: 7-15 cifre, opțional + la început (ex: +40712345678)"
+              autocomplete="tel"
+            >
+            <label class="field__label" for="phone">Telefon (ex: +40712345678)</label>
+          </div>
+          <span class="field__indicator" aria-hidden="true"></span>
+          <span class="field__error" aria-live="polite">⚠ Format invalid — ex: +40712345678 sau 0712345678</span>
+        </div>
+ 
+        <!-- PAROLĂ -->
+        <div class="field">
+          <div class="field__wrapper">
+            <input
+              class="field__input"
+              type="password"
+              name="password"
+              id="password"
+              placeholder=" "
+              required
+              minlength="8"
+              maxlength="128"
+              pattern=".{8,}"
+              title="Parola trebuie să aibă minim 8 caractere (recomandat: litere, cifre și simboluri)"
+              autocomplete="new-password"
+            >
+            <label class="field__label" for="password">Parolă (min. 8 caractere)</label>
+          </div>
+          <span class="field__indicator" aria-hidden="true"></span>
+          <span class="field__error" aria-live="polite">⚠ Parola trebuie să aibă minim 8 caractere</span>
+        </div>
+ 
+        <!-- COD ACCES -->
+        <div class="field">
+          <div class="field__wrapper">
+            <input
+              class="field__input"
+              type="text"
+              name="access_code"
+              id="access_code"
+              placeholder=" "
+              required
+              pattern="[A-Z0-9]{6}"
+              maxlength="6"
+              title="Cod de acces: exact 6 caractere — doar litere mari (A-Z) și cifre (0-9)"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <label class="field__label" for="access_code">Cod acces (ex: QU4NTM)</label>
+          </div>
+          <span class="field__indicator" aria-hidden="true"></span>
+          <span class="field__error" aria-live="polite">⚠ Exact 6 caractere: litere mari și cifre (ex: QU4NTM)</span>
+        </div>
+ 
+      </div>
+ 
+      <!-- MODULE SELECTATE -->
+      <div class="services-container" id="services" aria-live="polite"></div>
+ 
+      <div class="demo-btns" role="group" aria-label="Adaugă module">
+        <button type="button" class="demo-btn" onclick="addModule('Neural')">+ Neural</button>
+        <button type="button" class="demo-btn" onclick="addModule('Quantum')">+ Quantum</button>
+        <button type="button" class="demo-btn" onclick="addModule('Secure')">+ Secure</button>
+        <button type="button" class="demo-btn demo-btn--danger" onclick="clearModules()">✕ Golește</button>
+      </div>
+ 
+      <!-- CHECKBOX TERMENI -->
+      <label class="access-form__checkbox-row">
+        <input class="checkbox__input" type="checkbox" name="terms" id="terms" required>
+        <span class="access-form__checkbox-label">
+          Accept <strong>Termenii de Securitate</strong> și Politica de Confidențialitate
+        </span>
+      </label>
+ 
+      <!-- THE GATEKEEPER — activat exclusiv prin CSS :has() -->
+      <button class="btn access-form__submit" type="submit">
+        INIȚIAZĂ ACCES
+      </button>
+ 
+    </form>
+ 
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer class="footer">
+    QUANTUM UI SYSTEM &nbsp;·&nbsp; Alexanocikin Nicolai RC 251 &nbsp;·&nbsp;
+    Atomic Design · GPU Layers · 3D Spatial · BEM · CSS State Machine · Hardened Security
+  </footer>
+ 
+  <script>
+ 
+    /* ── THEME TOGGLE ── */
+    let isDark = false;
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.classList.toggle('dark-theme', isDark);
+      document.getElementById('themeToggleLabel').textContent =
+        isDark ? 'LIGHT MODE' : 'DARK MODE';
+    }
+ 
+    /* ── MODULES ── */
+    function addModule(name) {
+      const tag = document.createElement('span');
+      tag.className = 'services-container__tag';
+      tag.textContent = name;
+      document.getElementById('services').appendChild(tag);
+    }
+    function clearModules() {
+      document.getElementById('services').innerHTML = '';
+    }
+ 
+    /* ── SPECULAR TRACKING (Neural Glass) ── */
+    let lastX = 0, lastY = 0;
+ 
+    window.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+ 
+      const rotateY = (x - 0.5) * 30;
+      const rotateX = (0.5 - y) * 30;
+      document.documentElement.style.setProperty('--rx', rotateX + 'deg');
+      document.documentElement.style.setProperty('--ry', rotateY + 'deg');
+      document.documentElement.style.setProperty('--shadow-x', rotateY * -1.5 + 'px');
+      document.documentElement.style.setProperty('--shadow-y', 30 + Math.abs(rotateX) + 'px');
+      document.documentElement.style.setProperty('--light-x', (100 - x * 100) + '%');
+      document.documentElement.style.setProperty('--light-y', (100 - y * 100) + '%');
+ 
+      const dx    = e.clientX - lastX;
+      const dy    = e.clientY - lastY;
+      const speed = Math.sqrt(dx * dx + dy * dy);
+      const glitch = Math.min(speed / 8, 12);
+      document.documentElement.style.setProperty('--glitch-offset', glitch + 'px');
+ 
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+ 
+    window.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      const x = t.clientX / window.innerWidth;
+      const y = t.clientY / window.innerHeight;
+      document.documentElement.style.setProperty('--rx', ((0.5 - y) * 20) + 'deg');
+      document.documentElement.style.setProperty('--ry', ((x - 0.5) * 20) + 'deg');
+      document.documentElement.style.setProperty('--light-x', (100 - x * 100) + '%');
+      document.documentElement.style.setProperty('--light-y', (100 - y * 100) + '%');
+    }, { passive: true });
+ 
+  </script>
+</body>
+</html>

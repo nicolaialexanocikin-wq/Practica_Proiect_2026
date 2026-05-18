@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ✅ B. Content Security Policy (CSP) -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' https://trusted.com;
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+                 font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+                 frame-src https://www.google.com https://www.youtube.com;
+                 img-src 'self' data: https:;">
+
+    <title>GUD Restaurant</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF8F0;
+            color: #5C4B43;
+        }
+
+        img,
+        iframe,
+        video {
+            max-width: 100%;
+            display: block;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            color: #5C4B43;
+            text-decoration: none;
+        }
+
+        /* HEADER */
+
+        header {
+            height: 90px;
+            background-color: #F4E3D3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #5C4B43;
+            font-weight: 500;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 350px;
+            background-color: #FFD6B0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 40px 10%;
+        }
+
+        .hero-img {
+            width: 400px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .hero-text {
+            max-width: 450px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            line-height: 1.6;
+        }
+
+        /* ========================================= */
+        /* SERVICES SECTION - FLEXBOX REFACTORIZARE */
+        /* ========================================= */
+
+        .services {
+            padding: 70px 10%;
+            text-align: center;
+            background-color: #FFF8F0;
+        }
+
+        .services h2 {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #5C4B43;
+        }
+
+        /* FLEXBOX */
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            /* GAP CERUT */
+            gap: 35px;
+        }
+
+        /* CARD */
+
+        .card {
+            flex: 1 1 calc(33.333% - 35px);
+
+            max-width: 320px;
+            min-width: 260px;
+
+            background-color: white;
+
+            border-radius: 16px;
+            overflow: hidden;
+
+            border: 1px solid rgba(92, 75, 67, 0.2);
+
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* IMAGINE */
+
+        .card img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        /* CONTINUT */
+
+        .card-content {
+            padding: 22px;
+        }
+
+        .card-content h3 {
+            margin-bottom: 12px;
+            color: #5C4B43;
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #6B5A52;
+        }
+
+        /* VIDEO SECTION */
+
+        .video-section {
+            padding: 70px 10%;
+            background-color: #FDF2E7;
+            text-align: center;
+        }
+
+        .video-section h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .video-container {
+            max-width: 950px;
+            margin: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid #D9B99B;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 520px;
+            border: none;
+        }
+
+        /* CONTACT */
+
+        .contact-section {
+            padding: 70px 10%;
+            background-color: #FFF8F0;
+        }
+
+        .contact-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 35px;
+            border-radius: 18px;
+            border: 1px solid rgba(92, 75, 67, 0.15);
+        }
+
+        fieldset {
+            border: 1px solid rgba(92, 75, 67, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        legend {
+            padding: 0 10px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 18px 14px 10px;
+            border: 1px solid rgba(92, 75, 67, 0.3);
+            border-radius: 10px;
+            background-color: transparent;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            color: #5C4B43;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 14px;
+            top: 16px;
+            background-color: white;
+            padding: 0 5px;
+            transition: 0.3s;
+            pointer-events: none;
+            color: #8A7267;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #C88E64;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group textarea:focus + label,
+        .form-group textarea:not(:placeholder-shown) + label,
+        .form-group select:focus + label,
+        .form-group select:valid + label {
+            top: -10px;
+            font-size: 0.75rem;
+            color: #C88E64;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: transparent;
+        }
+
+        .error-msg {
+            display: none;
+            color: #B04B4B;
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+
+        .form-group input:invalid:focus ~ .error-msg,
+        .form-group textarea:invalid:focus ~ .error-msg,
+        .form-group select:invalid:focus ~ .error-msg {
+            display: block;
+        }
+
+        /* ── Erori vizibile după submit ── */
+        .was-submitted .form-group input:invalid ~ .error-msg,
+        .was-submitted .form-group select:invalid ~ .error-msg,
+        .was-submitted .form-group textarea:invalid ~ .error-msg {
+            display: block;
+        }
+        .was-submitted .form-group input:invalid,
+        .was-submitted .form-group select:invalid,
+        .was-submitted .form-group textarea:invalid {
+            border-color: #B04B4B;
+        }
+        .form-group input:not(:placeholder-shown):valid,
+        .form-group textarea:not(:placeholder-shown):valid {
+            border-color: #4B9E5C;
+        }
+        .form-group input:not(:placeholder-shown):invalid,
+        .form-group textarea:not(:placeholder-shown):invalid {
+            border-color: #B04B4B;
+        }
+        .success-banner {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(75,158,92,.12);
+            border: 1px solid #4B9E5C;
+            border-radius: 10px;
+            color: #2d6e3a;
+            font-size: .875rem;
+            text-align: center;
+        }
+        .success-banner.show { display: block; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background-color: #D9B99B;
+            color: #5C4B43;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #C88E64;
+            color: white;
+        }
+
+        .submit-btn:active {
+            animation: loading 0.7s linear infinite;
+        }
+
+        @keyframes loading {
+
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.97);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .contact-info {
+            background-color: white;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(92, 75, 67, 0.15);
+        }
+
+        .contact-info iframe {
+            width: 100%;
+            height: 250px;
+            border: 4px solid #D9B99B;
+        }
+
+        .info-content {
+            padding: 25px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        /* TABLE */
+
+        .schedule-section {
+            padding: 70px 10%;
+            background-color: #FDF2E7;
+        }
+
+        .schedule-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background-color: #D9B99B;
+            color: #5C4B43;
+            font-weight: 600;
+        }
+
+        th,
+        td {
+            border: 1px solid rgba(92, 75, 67, 0.15);
+            padding: 18px;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #FDF2E7;
+        }
+
+        tbody tr:hover td {
+            background-color: #FFDDBB;
+            color: #4B3B33;
+            transform: scale(1.01);
+        }
+
+        /* FOOTER */
+
+        footer {
+            background-color: #D9B99B;
+            padding: 35px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo span {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+
+        .footer-logo small {
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-info a {
+            text-decoration: none;
+            color: #5C4B43;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #5C4B43;
+            font-size: 1.5rem;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .video-container iframe {
+                height: 320px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .card {
+                flex: 1 1 calc(50% - 35px);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .services {
+                padding: 50px 5%;
+            }
+
+            .cards-container {
+                gap: 25px;
+            }
+
+            .card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .card img {
+                height: 220px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <a href="#" class="logo">GUD</a>
+
+        <nav>
+            <ul>
+                <li><a href="#">Acasă</a></li>
+                <li><a href="#">Servicii</a></li>
+                <li><a href="#">Despre</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <section class="hero">
+
+        <img src="assets/img/imag 1.avif"
+            alt="Interior restaurant"
+            class="hero-img">
+
+        <div class="hero-text">
+
+            <h1>GUD<br>by Alexandru Comerzan</h1>
+
+            <p>
+                Bucătărie premium, preparate proaspete și atmosferă elegantă
+                pentru experiențe culinare memorabile.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- SERVICES -->
+
+    <section class="services">
+
+        <h2>SERVICII</h2>
+
+        <div class="cards-container">
+
+            <div class="card">
+
+                <img src="assets/img/imag 2.avif"
+                    alt="Livrare rapidă">
+
+                <div class="card-content">
+
+                    <h3>Livrare Rapidă</h3>
+
+                    <p>
+                        Livrare rapidă și sigură oriunde în Chișinău.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <img src="assets/img/imag 3.avif"
+                    alt="Meniu premium">
+
+                <div class="card-content">
+
+                    <h3>Meniu Premium</h3>
+
+                    <p>
+                        Ingrediente atent selecționate și preparate speciale.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <img src="assets/img/imag 4.avif"
+                    alt="Rezervări online">
+
+                <div class="card-content">
+
+                    <h3>Rezervări Online</h3>
+
+                    <p>
+                        Rezervă rapid masa direct din site.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- VIDEO -->
+
+    <section class="video-section">
+
+        <h2>VIDEO DE PREZENTARE</h2>
+
+        <div class="video-container">
+
+            <iframe
+                src="https://www.youtube.com/embed/vLTODg9rrQQ"
+                title="Video de prezentare restaurant"
+                loading="lazy"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+    </section>
+
+    <!-- CONTACT -->
+
+    <section class="contact-section" id="contact">
+
+        <h2 class="contact-title">CONTACT</h2>
+
+        <div class="contact-grid">
+
+            <form class="contact-form" action="#" method="post" id="contactForm" novalidate>
+
+                <fieldset>
+
+                    <legend>Date personale</legend>
+
+                    <div class="form-group">
+
+                        <input type="text"
+                            id="name"
+                            name="name"
+                            placeholder=" "
+                            autocomplete="name"
+                            required
+                            minlength="3"
+                            maxlength="60"
+                            pattern="^[A-Za-zÀ-ÖØ-öø-ÿa-zA-Z\s\-']{3,60}$"
+                            title="Minim 3 litere, doar litere și spații">
+
+                        <label for="name">
+                            Nume complet
+                        </label>
+
+                        <span class="error-msg">
+                            Introduceți numele complet.
+                        </span>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="email"
+                            id="email"
+                            name="email"
+                            placeholder=" "
+                            autocomplete="email"
+                            required
+                            maxlength="100"
+                            pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                            title="Format valid: nume@domeniu.com">
+
+                        <label for="email">
+                            Adresă email
+                        </label>
+
+                        <span class="error-msg">
+                            Introduceți un email valid.
+                        </span>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder=" "
+                            autocomplete="tel"
+                            required
+                            maxlength="20"
+                            pattern="^(\+373|0)[0-9\s\-]{7,18}$"
+                            title="Format: +373 XXX XXX sau 0XX XXX XXX">
+
+                        <label for="phone">
+                            Număr telefon
+                        </label>
+
+                        <span class="error-msg">
+                            Introduceți numărul de telefon.
+                        </span>
+
+                    </div>
+
+                </fieldset>
+
+                <fieldset>
+
+                    <legend>Detalii mesaj</legend>
+
+                    <div class="form-group">
+
+                        <select id="subject"
+                            name="subject"
+                            required>
+
+                            <option value=""
+                                disabled
+                                selected
+                                hidden>
+                                Alege subiectul
+                            </option>
+
+                            <option value="rezervare">
+                                Rezervare
+                            </option>
+
+                            <option value="livrare">
+                                Livrare
+                            </option>
+
+                            <option value="eveniment">
+                                Eveniment privat
+                            </option>
+
+                            <option value="feedback">
+                                Feedback
+                            </option>
+
+                        </select>
+
+                        <label for="subject">
+                            Subiect mesaj
+                        </label>
+
+                        <span class="error-msg">
+                            Selectați un subiect.
+                        </span>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder=" "
+                            maxlength="250"
+                            minlength="10"
+                            required></textarea>
+
+                        <label for="message">
+                            Scrie mesajul tău
+                        </label>
+
+                        <span class="error-msg">
+                            Mesajul este obligatoriu.
+                        </span>
+
+                        <small class="char-counter">
+                            Limită: 250 caractere
+                        </small>
+
+                    </div>
+
+                </fieldset>
+
+                <button type="submit" class="submit-btn">
+                    Trimite mesajul
+                </button>
+
+                <div class="success-banner" id="successBanner">
+                    ✅ Mesajul a fost trimis cu succes!
+                </div>
+
+            </form>
+
+            <div class="contact-info">
+
+                <iframe
+                    src="https://www.google.com/maps?q=Chisinau&output=embed"
+                    title="Locația restaurantului"
+                    loading="lazy">
+                </iframe>
+
+                <div class="info-content">
+
+                    <h3>Date Contact</h3>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>Strada Mihail Sadoveanu 19, Chișinău</span>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+373 545 499</span>
+                    </div>
+
+                    <div class="contact-detail">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>contact@gudrestaurant.md</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- TABLE -->
+
+    <section class="schedule-section">
+
+        <h2 class="schedule-title">
+            LISTA DE PREȚURI / ORAR CONSULTAȚII
+        </h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th rowspan="2">Ziua</th>
+                        <th colspan="2">Program</th>
+                        <th colspan="2">Meniu Standard</th>
+                        <th>Premium</th>
+                    </tr>
+
+                    <tr>
+                        <th>Deschidere</th>
+                        <th>Închidere</th>
+                        <th>Mic Dejun</th>
+                        <th>Prânz</th>
+                        <th>Cină</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Luni</td>
+                        <td>08:00</td>
+                        <td>22:00</td>
+                        <td>50 MDL</td>
+                        <td>120 MDL</td>
+                        <td>250 MDL</td>
+                    </tr>
+
+                    <tr>
+                        <td>Marți</td>
+                        <td>08:00</td>
+                        <td>22:00</td>
+                        <td>50 MDL</td>
+                        <td>120 MDL</td>
+                        <td>250 MDL</td>
+                    </tr>
+
+                    <tr>
+                        <td>Miercuri</td>
+                        <td>08:00</td>
+                        <td>22:00</td>
+                        <td>55 MDL</td>
+                        <td>130 MDL</td>
+                        <td>270 MDL</td>
+                    </tr>
+
+                    <tr>
+                        <td>Joi</td>
+                        <td>08:00</td>
+                        <td>23:00</td>
+                        <td>55 MDL</td>
+                        <td>130 MDL</td>
+                        <td>270 MDL</td>
+                    </tr>
+
+                    <tr>
+                        <td>Vineri</td>
+                        <td>08:00</td>
+                        <td>00:00</td>
+                        <td>60 MDL</td>
+                        <td>150 MDL</td>
+                        <td>300 MDL</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sâmbătă</td>
+                        <td>09:00</td>
+                        <td>00:00</td>
+
+                        <td colspan="2">
+                            Ofertă Specială Weekend
+                        </td>
+
+                        <td>350 MDL</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <span>GUD</span>
+
+            <small>RESTAURANT</small>
+
+        </div>
+
+        <div class="footer-info">
+
+            <a href="tel:+373545499">
+                +373 545 499
+            </a>
+
+            <a href="mailto:contact@gudrestaurant.md">
+                contact@gudrestaurant.md
+            </a>
+
+        </div>
+
+        <div class="social-links">
+
+            <a href="#" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="#" aria-label="Facebook">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+
+        </div>
+
+    </footer>
+
+    <!-- ✅ A. JS: char counter + submit validation -->
+    <script>
+        // Counter caractere mesaj
+        const msgEl = document.getElementById('message');
+        const counterEl = document.querySelector('.char-counter');
+        if (msgEl && counterEl) {
+            msgEl.addEventListener('input', () => {
+                const len = msgEl.value.length;
+                counterEl.textContent = `${len} / 250 caractere`;
+                counterEl.style.color = len > 230 ? '#B04B4B' : '#8A7267';
+            });
+        }
+ 
+        // Submit cu validare vizuală
+        const form = document.getElementById('contactForm');
+        const successBanner = document.getElementById('successBanner');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                form.classList.add('was-submitted');
+                if (!form.checkValidity()) {
+                    const firstInvalid = form.querySelector(':invalid');
+                    if (firstInvalid) firstInvalid.focus();
+                    return;
+                }
+                successBanner.classList.add('show');
+                form.reset();
+                form.classList.remove('was-submitted');
+                if (counterEl) counterEl.textContent = '0 / 250 caractere';
+                setTimeout(() => successBanner.classList.remove('show'), 5000);
+            });
+        }
+    </script>
+ 
+</body>
+
+</html>
